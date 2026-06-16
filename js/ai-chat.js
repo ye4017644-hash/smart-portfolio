@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatHeader = document.getElementById('chatHeader');
     const toggleBtn = document.getElementById('toggleChatBtn');
 
-    // 1. منطق فتح وغلق الشات بسلاسة من الهيدر فقط
     if (chatHeader && chatWidget && toggleBtn) {
         chatHeader.addEventListener('click', () => {
             chatWidget.classList.toggle('minimized');
@@ -18,15 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // لمنع انكماش الشات بالخطأ عند الضغط داخل منطقة الكتابة
     const inputArea = document.querySelector('.chat-input-area');
     if (inputArea) {
-        inputArea.addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
+        inputArea.addEventListener('click', (e) => { e.stopPropagation(); });
     }
 
-    // 2. دالة إرسال الرسائل
     function sendMessage() {
         const text = userInput.value.trim();
         if (!text) return;
@@ -35,44 +30,48 @@ document.addEventListener('DOMContentLoaded', () => {
         userInput.value = '';
 
         setTimeout(() => {
-            const reply = getAIResponse(text);
-            appendMessage(reply, 'ai-msg');
+            handleAIResponse(text);
         }, 600);
     }
 
-    function appendMessage(text, className) {
+    // دالة محسنة تدعم إضافة أزرار وروابط HTML جوه الشات بسلاسة
+    function appendMessage(text, className, isHTML = false) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message', className);
-        messageDiv.innerText = text;
+        if (isHTML) {
+            messageDiv.innerHTML = text;
+        } else {
+            messageDiv.innerText = text;
+        }
         chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // 3. ذكاء الردود والتوجيه التلقائي للمشاريع
-    function getAIResponse(input) {
+    // إدارة الردود وإرسال أزرار تفاعلية للمشاريع لتفادي الحظر تماماً
+    function handleAIResponse(input) {
         const text = input.toLowerCase();
 
         if (text.includes('سعر') || text.includes('تكلفة') || text.includes('بكم')) {
-            return "أسعار المواقع بتعتمد على حجم الشغل والمميزات يا فندم. المواقع التعريفية البسيطة بتبدأ من تكلفة مناسبة جداً، تحب نناقش فكرتك؟";
+            appendMessage("أسعار المواقع بتعتمد على حجم الشغل والمميزات يا فندم. المواقع التعريفية البسيطة بتبدأ من تكلفة مناسبة جداً، تحب نناقش فكرتك؟", 'ai-msg');
         }
-        if (text.includes('3d') || text.includes('تفاعلي') || text.includes('ثلاثي')) {
-            // التوجيه الذكي: فتح ريبو الـ 3D تلقائياً بعد ثانية ونصف
-            setTimeout(() => {
-                window.open('https://ye4017644-hash.github.io/3D-Configurator/', '_blank');
-            }, 1500);
-            return "يوسف محترف في الـ Three.js والـ 3D! هفتحلك حالاً مشروع الـ 3D Configurator في لسان تبويب جديد عشان تجرّبه بنفسك..";
-        }
-        if (text.includes('لغات') || text.includes('تبرمج') || text.includes('تشتغل')) {
-            return "يوسف مبرمج Full-Stack متمكن، شغال بـ JavaScript, Node.js, Three.js, Python, وأنظمة الـ IoT مع Arduino.";
-        }
-        if (text.includes('تواصل') || text.includes('رقم') || text.includes('اتفق')) {
-            return "يسعدنا جداً العمل معك! سيب اسمك ورقم تليجرام أو وسيلة تواصل هنا، ويوسف هيكلمك فوراً لبدء المشروع.";
-        }
+        else if (text.includes('3d') || text.includes('تفاعلي') || text.includes('ثلاثي')) {
+            appendMessage("يوسف محترف جداً في الـ Three.js والـ 3D! اتفضل اضغط على الزرار ده وهيفتحلك المشروع فوراً وبأمان:", 'ai-msg');
 
-        return "أنا Joe AI المساعد الذكي ليوسف. تقدر تسألني عن مهاراته، أسعار البرمجة، أو تطلب مني أفتحلك أي مشروع من مشاريعنا السبعة حالاً!";
+            // حقن زرار رائع وقابل للضغط جوه الشات مباشرة!
+            const buttonHTML = `<a href="https://ye4017644-hash.github.io/3D-Configurator/" target="_blank" style="display: block; background: #5450FF; color: white; text-align: center; padding: 10px; border-radius: 10px; margin-top: 8px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 10px rgba(84,80,255,0.4);">🚀 افتح مشروع الـ 3D هنا</a>`;
+            appendMessage(buttonHTML, 'ai-msg', true);
+        }
+        else if (text.includes('لغات') || text.includes('تبرمج') || text.includes('تشتغل')) {
+            appendMessage("يوسف مبرمج Full-Stack متمكن، شغال بـ JavaScript, Node.js, Three.js, Python, وأنظمة الـ IoT مع Arduino.", 'ai-msg');
+        }
+        else if (text.includes('تواصل') || text.includes('رقم') || text.includes('اتفق')) {
+            appendMessage("يسعدنا جداً العمل معك! سيب اسمك ورقم تليجرام أو وسيلة تواصل هنا، ويوسف هيكلمك فوراً لبدء المشروع.", 'ai-msg');
+        }
+        else {
+            appendMessage("أنا Joe AI المساعد الذكي ليوسف. تقدر تسألني عن مهاراته، أسعار البرمجة، أو اكتب لي 'مشروع 3D' وهطلعلك زرار تشغيله فوراً!", 'ai-msg');
+        }
     }
 
-    // ربط أزرار الإرسال والـ Enter
     if (sendBtn && userInput) {
         sendBtn.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => {
