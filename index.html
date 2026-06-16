@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youssef Ehab | Smart Portfolio</title>
+    <link rel="icon" href="data:,">
+    <!-- ربط ملف الستاين الأنيق -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- استدعاء مكتبة Three.js للـ 3D مستقبلاً -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <!-- 1. خلفية الـ 3D التفاعلية -->
+    <div id="canvas-container"></div>
+
+    <!-- 2. الواجهة الرئيسية للموقع -->
+    <main class="main-content">
+        <header>
+            <h1 class="logo">JOE<span>.AI</span></h1>
+            <p class="subtitle">أهلاً بك في مساحتي التفاعلية.. حوّل فكرتك إلى واقع</p>
+        </header>
+
+        <!-- شبكة عرض المشاريع السبعة -->
+        <section class="projects-section">
+            <h2>مشاريعي البرمجية</h2>
+            <div class="projects-grid" id="projectsGrid">
+                <!-- البطاقات هتنزل هنا بالـ JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- 3. شات البوت الذكي الثابت (Joe AI) -->
+    <div class="ai-chat-widget" id="chatWidget">
+        <div class="chat-header" id="chatHeader" style="cursor: pointer;">
+            <h4>المساعد الذكي (Joe AI)</h4>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="status-dot"></span>
+                <span id="toggleChatBtn" style="color: #FFFFFF; font-weight: bold; font-size: 1.2rem;">−</span>
+            </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-msg">مرحباً! أنا Joe AI. كيف يمكنني مساعدتك في مشروعك اليوم؟</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="اسألني عن مشاريع يوسف أو أسعار المواقع...">
+            <button id="sendBtn">إرسال</button>
+        </div>
+    </div>
+
+    <!-- ربط ملفات الـ JavaScript -->
+    <script src="js/three-scene.js"></script>
+    <script src="js/ai-chat.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
